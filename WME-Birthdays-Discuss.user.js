@@ -14,23 +14,25 @@
 
 (function() {
     'use strict';
-const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-const d = new Date();
+
+    const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    const d = new Date();
+    let button;
+
     // Function to extract usernames and copy to clipboard
     function copyUsernamesToClipboard() {
-        // Extracting usernames from the page
         const userElements = document.querySelectorAll('[data-username]');
         const usernames = Array.from(userElements).map(el => `@${el.getAttribute('data-username')}`).join('\n');
 
-        // Using GM_setClipboard to copy to clipboard
-        //GM_setClipboard(':tada: Birthdays for ' + months[d.getMonth()] + ' ***' + d.getDate() + '***, ' + d.getFullYear() + ':\n\n@' + usernames.join( '\n@' ) + '\n\nHappy Birthday everyone! :partying_face:');
         GM_setClipboard(':tada: Birthdays for ' + months[d.getMonth()] + ' ***' + d.getDate() + '***, ' + d.getFullYear() + ':\n\n' + usernames + '\n\nHappy Birthday everyone! :partying_face:');
         alert('Birthdays copied to clipboard!');
     }
 
-    // Create a button and append it to the page
     function createCopyButton() {
-        const button = document.createElement('button');
+        if (button) {
+            button.remove();
+        }
+        button = document.createElement('button');
         button.textContent = 'Copy Birthdays';
         button.style.position = 'fixed';
         button.style.bottom = '20px';
@@ -46,6 +48,22 @@ const d = new Date();
         document.body.appendChild(button);
     }
 
-    // Initialize the script
-    createCopyButton();
+    function checkUrl() {
+        if (window.location.href.startsWith("https://www.waze.com/discuss/cakeday/birthdays")) {
+            createCopyButton();
+        } else {
+            if (button) {
+                button.remove();
+                button = null;
+            }
+        }
+    }
+
+    // Initial check
+    checkUrl();
+
+    window.addEventListener('popstate', checkUrl);
+
+    setInterval(checkUrl, 1000);
+
 })();
