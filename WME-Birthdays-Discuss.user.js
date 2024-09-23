@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WME Birthdays (Discuss)
 // @namespace    DeviateFromThePlan
-// @version      2024.09.16.01
+// @version      2024.09.24.01
 // @description  Extract birthdays from Discuss & copy them to clipboard.
 // @author       DeviateFromThePlan
 // @match        https://www.waze.com/discuss/cakeday/birthdays*
